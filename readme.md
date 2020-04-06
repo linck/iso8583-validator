@@ -14,7 +14,7 @@ Na pasta do da aplicação tem dois arquivos xml.
 
 ### Criação dos Validators
 
-É nécessário configurar os validators através do arquivo **validators.json**. Ver sessão [Validators][Validators] para mais informações sobre como fazer isso.
+É nécessário configurar os validators através do arquivo **validators.json**. Ver sessão **Validators** para mais informações sobre como fazer isso.
 
 --------
 
@@ -26,9 +26,9 @@ Execute a transação desejada para o ambiente montado de sua preferência
 
 ### Coletar logs
 
-- Colete o os logs xml da transação feita, e da transação original se for necessário. 
+- Colete o os logs xml da transação feita e da transação original, se for necessário. 
 - O  conteúdo log do da transação a ser validada coloque no arquivo **logiso.xml** 
-- O conteúdo do log da transação origina, se for necessário, coloque no arquivo **logiso_original.xml**
+- O conteúdo do log da transação original, se for necessário, coloque no arquivo **logiso_original.xml**
 
 ### Executar a aplicaçao
 
@@ -38,12 +38,12 @@ iso8583-validator [nome_do_validador]
 
 # Validators
 
-Os validators são as regras que o **Iso8583-validator** irá seguir para fazer a validação da mensagem informada nos arquivos .xml
-Estes deverão ser definidos no arquivo **validators.json** que estpa na raiz da aplicação.
+Os validators são as regras que o **Iso8583-validator** irá seguir para fazer a validação da mensagem informada nos arquivos .xml.
+Estes deverão ser definidos no arquivo **validators.json** que está na raiz da aplicação.
 
 ## Campos
 
-Um validador sem tem como o atributo inicial o **nome validador**, este será usando como uma chave que o identifica. Deve ser único. Este será usado como argumento da linha de comando da aplicação:
+Um validador sempre tem como o atributo inicial o **nome validador**, este será usando como uma chave que o identifica. Deve ser único. Este será usado como argumento da linha de comando da aplicação:
 
 Exemplo:
 
