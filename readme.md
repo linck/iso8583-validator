@@ -1,7 +1,7 @@
 <div align="center">
   <h1><strong>ISO8583 Validator</strong></h1>
   <a href="https://github.com/linck/iso8583-validato">
-    <img src="https://github.com/linck/iso8583-validator/blob/master/icon.png">
+    <img src="https://github.com/linck/iso8583-validator/blob/master/icon_256.png">
   </a>
   <br>
 </div>
