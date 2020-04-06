@@ -1,4 +1,10 @@
-# ISO8583 Validator
+<div align="center">
+  <h1><strong>ISO8583 Validator</strong></h1>
+  <a href="https://github.com/linck/iso8583-validato">
+    <img src="https://github.com/linck/iso8583-validator/blob/master/icon.png">
+  </a>
+  <br>
+</div>
 
 Ferramenta para auxiliar na validação da mensageria ISO8583
 
