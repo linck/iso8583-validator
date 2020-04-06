@@ -4,9 +4,10 @@
     <img src="https://github.com/linck/iso8583-validator/blob/master/icon_256.png">
   </a>
   <br>
+<h2><strong>Ferramenta para auxiliar na validação da mensageria ISO8583
+</strong></h2>
 </div>
 
-Ferramenta para auxiliar na validação da mensageria ISO8583
 
 --------
 ## Pre-requisitos
