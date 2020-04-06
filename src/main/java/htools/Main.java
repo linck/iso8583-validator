@@ -4,6 +4,11 @@ import java.io.IOException;
 
 import htools.analyzer.XmlIsoAnalyzer;
 
+/**
+ * 
+ * @author humberto.machado
+ *
+ */
 public class Main {
 
 	public static void main(String[] args) throws IOException {
