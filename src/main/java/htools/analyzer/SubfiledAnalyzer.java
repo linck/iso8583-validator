@@ -1,13 +1,11 @@
 package htools.analyzer;
 
-import static htools.utils.ErrorMessagesFormatter.formatMandatoryIfExistsBitMessage;
-import static htools.utils.ErrorMessagesFormatter.formatMandatoryIfNotExistsBitMessage;
+import htools.utils.Field;
+import htools.validator.FieldValidatorTO;
 
 import java.util.Map;
 
-import htools.utils.Field;
-import htools.utils.TLVTranslator;
-import htools.validator.FieldValidatorTO;
+import static htools.utils.ErrorMessagesFormatter.*;
 
 public class SubfiledAnalyzer {
 	
@@ -15,10 +13,8 @@ public class SubfiledAnalyzer {
 		
 	}
 	
-	public static boolean analyze(Map<String, Field> fields, Field field, FieldValidatorTO subfieldsValidator) {
-		Map<String, String> tlvSubfields = TLVTranslator.translate(field.getValue());
+	public static boolean analyze(Map<String, Field> fields, Field field, FieldValidatorTO subfieldsValidator, String subfieldContent, Map<String, String> tlvSubfields) {
 
-		String subfieldContent = tlvSubfields.get(subfieldsValidator.getId());
 		if (subfieldsValidator.isMandatory() && subfieldContent == null) {
 			System.out.println("Subcampo mandatorio ausente: " + "Bit-" + field.getId() + " Subcampo-"
 					+ subfieldsValidator.getId() + " (" + subfieldsValidator.getDescription() + ")");
@@ -37,6 +33,13 @@ public class SubfiledAnalyzer {
 			Field fieldDependency = fields.get(subfieldsValidator.getMandatoryIfNotExistsField());
 			if (fieldDependency == null && subfieldContent == null) {
 				System.out.println(formatMandatoryIfNotExistsBitMessage(field, subfieldsValidator));
+				return false;
+			}
+		}
+
+		if (subfieldsValidator.getMandatoryIfNotExistsSubfield() != null) {
+			if(!tlvSubfields.containsKey(subfieldsValidator.getMandatoryIfNotExistsSubfield())) {
+				System.out.println(formatMandatoryIfNotExistsSubfieldMessage(field, subfieldsValidator));
 				return false;
 			}
 		}

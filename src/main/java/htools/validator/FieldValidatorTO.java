@@ -10,9 +10,11 @@ public class FieldValidatorTO {
 	private String regex;
 	private String mandatoryIfExistsField;
 	private String mandatoryIfNotExistsField;
-	private List<Integer> containsOriginalFields; 
+	private String mandatoryIfNotExistsSubfield;
+	private List<Integer> containsOriginalFields;
 	private List<String> contains; 
 	private List<FieldValidatorTO> subfields;
+	private String contentType;
 
 	public String getId() {
 		return id;
@@ -85,5 +87,21 @@ public class FieldValidatorTO {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public String getContentType() {
+		return contentType;
+	}
+
+	public void setContentType(String contentType) {
+		this.contentType = contentType;
+	}
+
+	public String getMandatoryIfNotExistsSubfield() {
+		return mandatoryIfNotExistsSubfield;
+	}
+
+	public void setMandatoryIfNotExistsSubfield(String mandatoryIfNotExistsSubfield) {
+		this.mandatoryIfNotExistsSubfield = mandatoryIfNotExistsSubfield;
 	}
 }

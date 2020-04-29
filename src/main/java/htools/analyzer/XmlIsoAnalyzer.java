@@ -1,19 +1,19 @@
 package htools.analyzer;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import htools.utils.Field;
+import htools.utils.IsoMsgXml;
+import htools.utils.TLVTranslator;
+import htools.validator.FieldValidatorTO;
+import htools.validator.ValidatorTO;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import htools.utils.Field;
-import htools.utils.IsoMsgXml;
-import htools.validator.FieldValidatorTO;
-import htools.validator.ValidatorTO;
 
 public class XmlIsoAnalyzer {
 
@@ -41,8 +41,10 @@ public class XmlIsoAnalyzer {
 
 			List<FieldValidatorTO> subfieldsValidators = fieldValidator.getSubfields();
 			if (subfieldsValidators != null) {
+				Map<String, String> tlvSubfields = TLVTranslator.translate(field.getValue(), subfieldsValidators);
 				for (FieldValidatorTO subfieldsValidator : subfieldsValidators) {
-					SubfiledAnalyzer.analyze(fields, field, subfieldsValidator);
+					String subfieldContent = tlvSubfields.get(subfieldsValidator.getId());
+					SubfiledAnalyzer.analyze(fields, field, subfieldsValidator, subfieldContent, tlvSubfields);
 				}
 			}
 		}
