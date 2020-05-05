@@ -45,8 +45,7 @@ public class XmlIsoAnalyzer {
 				if (subfieldsValidators != null) {
 					Map<String, String> tlvSubfields = TLVTranslator.translate(field.getValue(), subfieldsValidators);
 					for (FieldValidatorTO subfieldsValidator : subfieldsValidators) {
-						String subfieldContent = tlvSubfields.get(subfieldsValidator.getId());
-						SubfiledAnalyzer.analyze(fields, field, subfieldsValidator, subfieldContent, tlvSubfields);
+						SubfiledAnalyzer.analyze(fields, field, subfieldsValidator, tlvSubfields);
 					}
 				}
 			}
