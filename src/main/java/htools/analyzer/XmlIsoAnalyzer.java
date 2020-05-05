@@ -36,15 +36,18 @@ public class XmlIsoAnalyzer {
 			ValidatorTO validator) {
 		List<FieldValidatorTO> fieldsValidators = validator.getFields();
 		for (FieldValidatorTO fieldValidator : fieldsValidators) {
-			Field field = fields.get(fieldValidator.getId());
-			FieldAnalyzer.analyze(fields, fieldsOriginal, field, fieldValidator);
-
-			List<FieldValidatorTO> subfieldsValidators = fieldValidator.getSubfields();
-			if (subfieldsValidators != null) {
-				Map<String, String> tlvSubfields = TLVTranslator.translate(field.getValue(), subfieldsValidators);
-				for (FieldValidatorTO subfieldsValidator : subfieldsValidators) {
-					String subfieldContent = tlvSubfields.get(subfieldsValidator.getId());
-					SubfiledAnalyzer.analyze(fields, field, subfieldsValidator, subfieldContent, tlvSubfields);
+			boolean ignoreField = validator.getExtendsOfRemoveFields().stream().anyMatch(fieldToRemove -> fieldToRemove.equals(fieldValidator.getId()));
+			if(!ignoreField) {
+				Field field = fields.get(fieldValidator.getId());
+				FieldAnalyzer.analyze(fields, fieldsOriginal, field, fieldValidator);
+	
+				List<FieldValidatorTO> subfieldsValidators = fieldValidator.getSubfields();
+				if (subfieldsValidators != null) {
+					Map<String, String> tlvSubfields = TLVTranslator.translate(field.getValue(), subfieldsValidators);
+					for (FieldValidatorTO subfieldsValidator : subfieldsValidators) {
+						String subfieldContent = tlvSubfields.get(subfieldsValidator.getId());
+						SubfiledAnalyzer.analyze(fields, field, subfieldsValidator, subfieldContent, tlvSubfields);
+					}
 				}
 			}
 		}
