@@ -37,15 +37,24 @@ public class XmlIsoAnalyzer {
 		List<FieldValidatorTO> fieldsValidators = validator.getFields();
 		if(fieldsValidators != null) {
 			for (FieldValidatorTO fieldValidator : fieldsValidators) {
-				Field field = fields.get(fieldValidator.getId());
-				FieldAnalyzer.analyze(fields, fieldsOriginalReq, fieldsOriginalResp, field, fieldValidator);
+				boolean ignoreField = false;
 				
-				List<FieldValidatorTO> subfieldsValidators = fieldValidator.getSubfields();
-				if (subfieldsValidators != null && field != null) {
-					Map<String, String> tlvSubfields = TLVTranslator.translate(field.getValue(), subfieldsValidators);
-					for (FieldValidatorTO subfieldsValidator : subfieldsValidators) {
-						String subfieldContent = tlvSubfields.get(subfieldsValidator.getId());
-						SubfiledAnalyzer.analyze(fields, field, subfieldsValidator, subfieldContent, tlvSubfields);
+				if (validator.getExtendsOfRemoveFields() != null && validator.getExtendsOfRemoveFields().stream()
+						.anyMatch(fieldToIgnore -> fieldToIgnore.equals(fieldValidator.getId()))) {
+					ignoreField = true;
+				}
+				
+				if(!ignoreField) {
+					Field field = fields.get(fieldValidator.getId());
+					FieldAnalyzer.analyze(fields, fieldsOriginalReq, fieldsOriginalResp, field, fieldValidator);
+					
+					List<FieldValidatorTO> subfieldsValidators = fieldValidator.getSubfields();
+					if (subfieldsValidators != null && field != null) {
+						Map<String, String> tlvSubfields = TLVTranslator.translate(field.getValue(), subfieldsValidators);
+						for (FieldValidatorTO subfieldsValidator : subfieldsValidators) {
+							String subfieldContent = tlvSubfields.get(subfieldsValidator.getId());
+							SubfiledAnalyzer.analyze(fields, field, subfieldsValidator, subfieldContent, tlvSubfields);
+						}
 					}
 				}
 			}
@@ -55,7 +64,10 @@ public class XmlIsoAnalyzer {
 	private void executeBaseValidations(Map<String, Field> fields, ValidatorTO validator) {
 		if (validator.getMandatoryFields() != null) {
 			validator.getMandatoryFields().forEach(v -> {
-				if (fields.get(v) == null) {
+				if (fields.get(v) == null 
+						&& (validator.getExtendsOfRemoveFields() != null
+						&& validator.getExtendsOfRemoveFields().stream().noneMatch(fieldToIgnore -> fieldToIgnore.equals(v))
+						|| validator.getExtendsOfRemoveFields() == null)) {
 					System.out.println("Bit mandatorio ausente: Bit-" + v);
 				}
 			});
