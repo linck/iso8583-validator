@@ -20,7 +20,8 @@
 			<directory>/</directory>
 			<outputDirectory>/</outputDirectory>
 			<includes>
-				<include>logiso_original.xml</include>
+				<include>logiso_original_req.xml</include>
+				<include>logiso_original_resp.xml</include>
 				<include>logiso.xml</include>
 				<include>validator.json</include>
 				<include>iso8583-validator.bat</include>

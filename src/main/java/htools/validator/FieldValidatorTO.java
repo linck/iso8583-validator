@@ -12,6 +12,7 @@ public class FieldValidatorTO {
 	private String mandatoryIfNotExistsField;
 	private String mandatoryIfNotExistsSubfield;
 	private List<Integer> containsOriginalFields;
+	private List<Integer> containsOriginalRespFields;
 	private List<String> contains; 
 	private List<FieldValidatorTO> subfields;
 	private String contentType;
@@ -57,14 +58,6 @@ public class FieldValidatorTO {
 		this.contains = contains;
 	}
 
-	public List<Integer> getContainsOriginalFields() {
-		return containsOriginalFields;
-	}
-
-	public void setContainsOriginalFields(List<Integer> containsOriginalFields) {
-		this.containsOriginalFields = containsOriginalFields;
-	}
-
 	public String getMandatoryIfExistsField() {
 		return mandatoryIfExistsField;
 	}
@@ -103,5 +96,21 @@ public class FieldValidatorTO {
 
 	public void setMandatoryIfNotExistsSubfield(String mandatoryIfNotExistsSubfield) {
 		this.mandatoryIfNotExistsSubfield = mandatoryIfNotExistsSubfield;
+	}
+
+	public List<Integer> getContainsOriginalFields() {
+		return containsOriginalFields;
+	}
+
+	public void setContainsOriginalFields(List<Integer> containsOriginalFields) {
+		this.containsOriginalFields = containsOriginalFields;
+	}
+
+	public List<Integer> getContainsOriginalRespFields() {
+		return containsOriginalRespFields;
+	}
+
+	public void setContainsOriginalRespFields(List<Integer> containsOriginalRespFields) {
+		this.containsOriginalRespFields = containsOriginalRespFields;
 	}
 }

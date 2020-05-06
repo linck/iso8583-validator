@@ -3,29 +3,28 @@ package htools.analyzer;
 import static htools.utils.ErrorMessagesFormatter.formatMandatoryIfExistsBitMessage;
 import static htools.utils.ErrorMessagesFormatter.formatMandatoryIfNotExistsBitMessage;
 
+import java.util.List;
 import java.util.Map;
 
 import htools.utils.Field;
 import htools.validator.FieldValidatorTO;
 
 public class FieldAnalyzer {
-	
+
 	private FieldAnalyzer() {
-		
+
 	}
-	
-	public static boolean analyze(Map<String, Field> fields, Map<String, Field> fieldsOriginal, Field field,
-			FieldValidatorTO fieldValidator) {
+
+	public static void analyze(Map<String, Field> fields, Map<String, Field> fieldsOriginalReq,
+			Map<String, Field> fieldsOriginalResp, Field field, FieldValidatorTO fieldValidator) {
 		if (field == null && fieldValidator.isMandatory()) {
 			System.out.println("Bit mandatorio ausente: " + fieldValidator.getId());
-			return false;
 		}
 
 		if (fieldValidator.getMandatoryIfExistsField() != null) {
 			Field fieldDependency = fields.get(fieldValidator.getMandatoryIfExistsField());
 			if (fieldDependency != null && field == null) {
 				System.out.println(formatMandatoryIfExistsBitMessage(fieldDependency, fieldValidator));
-				return false;
 			}
 		}
 
@@ -33,7 +32,6 @@ public class FieldAnalyzer {
 			Field fieldDependency = fields.get(fieldValidator.getMandatoryIfNotExistsField());
 			if (fieldDependency == null && field == null) {
 				System.out.println(formatMandatoryIfNotExistsBitMessage(fieldDependency, fieldValidator));
-				return false;
 			}
 		}
 
@@ -42,7 +40,6 @@ public class FieldAnalyzer {
 			if (fieldValidator.getRegex() != null && !value.matches(fieldValidator.getRegex())) {
 				System.out.println("Valor do bit invalido: Bit-" + fieldValidator.getId() + " (Esperado: ["
 						+ fieldValidator.getRegex() + "] > Atual: [" + value + "])");
-				return false;
 			}
 
 			if (fieldValidator.getContains() != null) {
@@ -50,23 +47,27 @@ public class FieldAnalyzer {
 					if (!value.contains(containsValue)) {
 						System.out.println("Valor do bit invalido: Bit-" + fieldValidator.getId()
 								+ "não contém o valor " + containsValue);
-						return false;
 					}
 				}
 			}
+			validateFieldsOriginal(fieldsOriginalReq, fieldValidator, fieldValidator.getContainsOriginalFields(),
+					value);
+			validateFieldsOriginal(fieldsOriginalResp, fieldValidator, fieldValidator.getContainsOriginalRespFields(),
+					value);
 
-			if (fieldValidator.getContainsOriginalFields() != null) {
-				for (Integer containsBit : fieldValidator.getContainsOriginalFields()) {
-					Field fieldContains = fieldsOriginal.get(containsBit.toString());
-					if (!value.contains(fieldContains.getValue())) {
-						System.out.println("Valor do bit invalido: Bit-" + fieldValidator.getId() + " não contém o bit "
-								+ containsBit + " da transação original");
-						return false;
-					}
+		}
+	}
+
+	private static void validateFieldsOriginal(Map<String, Field> fieldsOriginal, FieldValidatorTO fieldValidator,
+			List<Integer> containsOriginalFields, String value) {
+		if (containsOriginalFields != null) {
+			for (Integer originalBit : containsOriginalFields) {
+				Field fieldOriginal = fieldsOriginal.get(originalBit.toString());
+				if (!value.contains(fieldOriginal.getValue())) {
+					System.out.println("Valor do bit invalido: Bit-" + fieldValidator.getId() + " não contém o bit "
+							+ originalBit + " da transação original");
 				}
 			}
 		}
-
-		return true;
 	}
 }

@@ -26,10 +26,8 @@ public class TLVTranslator {
 			length = Integer.parseInt(string.substring(i, i + 3));
 			i = i + 3;
 
-			if(subfield != null && subfield.getContentType() != null) {
-				if (subfield.getContentType().equals("binary")) {
-					length *= 2;
-				}
+			if (subfield != null && subfield.getContentType() != null && subfield.getContentType().equals("binary")) {
+				length *= 2;
 			}
 
 			if (length > 0) {

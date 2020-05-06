@@ -11,8 +11,29 @@ import htools.analyzer.XmlIsoAnalyzer;
  */
 public class Main {
 
+	private static final String DEFAULT_VALIDATOR_PATH = "validator.json";
+
 	public static void main(String[] args) throws IOException {
-		new XmlIsoAnalyzer().analyze("logiso.xml", "logiso_original.xml", args[0]);
+		String validatorName = getArgValue(args, 0);
+		String validatorFilePath = getArgValue(args, 1, DEFAULT_VALIDATOR_PATH);
+
+		if (validatorName == null) {
+			System.out.println("Nome do validador nao pode ser null");
+			return;
+		}
+
+		new XmlIsoAnalyzer().analyze("logiso.xml", "logiso_original_req.xml", "logiso_original_resp.xml", validatorName,
+				validatorFilePath);
 	}
 
+	private static String getArgValue(String[] args, int index, String defaultValue) {
+		if (args != null && args.length > index) {
+			return args[index];
+		}
+		return defaultValue;
+	}
+
+	private static String getArgValue(String[] args, int index) {
+		return getArgValue(args, index, null);
+	}
 }

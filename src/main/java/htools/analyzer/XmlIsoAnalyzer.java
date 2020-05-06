@@ -17,35 +17,35 @@ import java.util.stream.Collectors;
 
 public class XmlIsoAnalyzer {
 
-	public static final String VALIDATOR = "validator.json";
-
-	public void analyze(String msgPath, String originalMsgPath, String transaction) throws IOException {
+	public void analyze(String msgPath, String originalMsgReqPath, String originalMsgRespPath, String validatorName,
+			String validatorFilePath) throws IOException {
 		Map<String, Field> fields = getIsoFields(msgPath);
-		Map<String, Field> fieldsOriginal = getIsoFields(originalMsgPath);
-		Map<String, ValidatorTO> validators = parseValidators(VALIDATOR);
+		Map<String, Field> fieldsOriginalResp = getIsoFields(originalMsgRespPath);
+		Map<String, Field> fieldsOriginalReq = getIsoFields(originalMsgReqPath);
+		Map<String, ValidatorTO> validators = parseValidators(validatorFilePath);
 
 		if (fields != null && validators != null) {
-			ValidatorTO validator = validators.get(transaction);
+			ValidatorTO validator = validators.get(validatorName);
 			ValidatorTO.extendsOf(validators, validator);
 			executeBaseValidations(fields, validator);
-			validateFieldsAndSubfields(fields, fieldsOriginal, validator);
+			validateFieldsAndSubfields(fields, fieldsOriginalReq, fieldsOriginalResp, validator);
 		}
 	}
 
-	private void validateFieldsAndSubfields(Map<String, Field> fields, Map<String, Field> fieldsOriginal,
-			ValidatorTO validator) {
+	private void validateFieldsAndSubfields(Map<String, Field> fields, Map<String, Field> fieldsOriginalReq,
+			Map<String, Field> fieldsOriginalResp, ValidatorTO validator) {
 		List<FieldValidatorTO> fieldsValidators = validator.getFields();
-		for (FieldValidatorTO fieldValidator : fieldsValidators) {
-			boolean ignoreField = validator.getExtendsOfRemoveFields().stream().anyMatch(fieldToRemove -> fieldToRemove.equals(fieldValidator.getId()));
-			if(!ignoreField) {
+		if(fieldsValidators != null) {
+			for (FieldValidatorTO fieldValidator : fieldsValidators) {
 				Field field = fields.get(fieldValidator.getId());
-				FieldAnalyzer.analyze(fields, fieldsOriginal, field, fieldValidator);
-	
+				FieldAnalyzer.analyze(fields, fieldsOriginalReq, fieldsOriginalResp, field, fieldValidator);
+				
 				List<FieldValidatorTO> subfieldsValidators = fieldValidator.getSubfields();
-				if (subfieldsValidators != null) {
+				if (subfieldsValidators != null && field != null) {
 					Map<String, String> tlvSubfields = TLVTranslator.translate(field.getValue(), subfieldsValidators);
 					for (FieldValidatorTO subfieldsValidator : subfieldsValidators) {
-						SubfiledAnalyzer.analyze(fields, field, subfieldsValidator, tlvSubfields);
+						String subfieldContent = tlvSubfields.get(subfieldsValidator.getId());
+						SubfiledAnalyzer.analyze(fields, field, subfieldsValidator, subfieldContent, tlvSubfields);
 					}
 				}
 			}
