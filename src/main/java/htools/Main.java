@@ -22,6 +22,7 @@ public class Main {
 			return;
 		}
 
+		System.out.println("Analizando: " + validatorName + "\nUtilizando: " + validatorFilePath + "\n");
 		new XmlIsoAnalyzer().analyze("logiso.xml", "logiso_original_req.xml", "logiso_original_resp.xml", validatorName,
 				validatorFilePath);
 	}

@@ -13,9 +13,9 @@ public class SubfiledAnalyzer {
 		
 	}
 	
-	public static void analyze(Map<String, Field> fields, Field field, FieldValidatorTO subfieldsValidator,
-			String subfieldContent, Map<String, String> tlvSubfields) {
-
+	public static void analyze(Map<String, Field> fields, Field field, FieldValidatorTO subfieldsValidator, Map<String, String> tlvSubfields) {
+		
+		String subfieldContent = tlvSubfields.get(subfieldsValidator.getId());
 		if (subfieldsValidator.isMandatory() && subfieldContent == null) {
 			System.out.println("Subcampo mandatorio ausente: " + "Bit-" + field.getId() + " Subcampo-"
 					+ subfieldsValidator.getId() + " (" + subfieldsValidator.getDescription() + ")");

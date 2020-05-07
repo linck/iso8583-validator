@@ -16,7 +16,8 @@ public class FieldValidatorTO {
 	private List<String> contains; 
 	private List<FieldValidatorTO> subfields;
 	private String contentType;
-
+	private List<FieldDependencyTO> fieldsDependency;
+	
 	public String getId() {
 		return id;
 	}
@@ -112,5 +113,13 @@ public class FieldValidatorTO {
 
 	public void setContainsOriginalRespFields(List<Integer> containsOriginalRespFields) {
 		this.containsOriginalRespFields = containsOriginalRespFields;
+	}
+
+	public List<FieldDependencyTO> getFieldsDependency() {
+		return fieldsDependency;
+	}
+
+	public void setFieldsDependency(List<FieldDependencyTO> fieldsDependency) {
+		this.fieldsDependency = fieldsDependency;
 	}
 }

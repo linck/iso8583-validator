@@ -2,6 +2,8 @@ package htools.analyzer;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
+import htools.exception.ValidatorNotExistsException;
 import htools.utils.Field;
 import htools.utils.IsoMsgXml;
 import htools.utils.TLVTranslator;
@@ -24,7 +26,11 @@ public class XmlIsoAnalyzer {
 		Map<String, Field> fieldsOriginalReq = getIsoFields(originalMsgReqPath);
 		Map<String, ValidatorTO> validators = parseValidators(validatorFilePath);
 
-		if (fields != null && validators != null) {
+		if(!validators.containsKey(validatorName)) {
+			throw new ValidatorNotExistsException(validatorName);
+		}
+		
+		if (fields != null) {
 			ValidatorTO validator = validators.get(validatorName);
 			ValidatorTO.extendsOf(validators, validator);
 			executeBaseValidations(fields, validator);
@@ -47,13 +53,12 @@ public class XmlIsoAnalyzer {
 				if(!ignoreField) {
 					Field field = fields.get(fieldValidator.getId());
 					FieldAnalyzer.analyze(fields, fieldsOriginalReq, fieldsOriginalResp, field, fieldValidator);
-					
+					FieldDependencyAnalyzer.analyze(fieldValidator.getFieldsDependency(), fields, field, fieldValidator);
 					List<FieldValidatorTO> subfieldsValidators = fieldValidator.getSubfields();
 					if (subfieldsValidators != null && field != null) {
 						Map<String, String> tlvSubfields = TLVTranslator.translate(field.getValue(), subfieldsValidators);
 						for (FieldValidatorTO subfieldsValidator : subfieldsValidators) {
-							String subfieldContent = tlvSubfields.get(subfieldsValidator.getId());
-							SubfiledAnalyzer.analyze(fields, field, subfieldsValidator, subfieldContent, tlvSubfields);
+							SubfiledAnalyzer.analyze(fields, field, subfieldsValidator, tlvSubfields);
 						}
 					}
 				}
