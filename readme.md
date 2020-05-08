@@ -124,16 +124,20 @@ iso8583-validator nome_do_validador
         ]
       },
 	  {
-		"id": "35",
-        "description": "Track two",
-        "mandatory": false,
-        "fieldsDependency" : [
-			{
-				"id": "22",
-				"content": ["000", "001", "002"],
-				"checkMethod": "match"
-			}
-		]
+	   "id":"35",
+	   "description":"Track two",
+	   "mandatory":false,
+	   "fieldsDependency":[
+		  {
+			 "id":"22",
+			 "content":[
+				"000",
+				"001",
+				"002"
+			 ],
+			 "checkMethod":"match"
+		  }
+	   ]
 	  },
       {
           Campo 3....
