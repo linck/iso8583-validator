@@ -145,7 +145,7 @@ iso8583-validator nome_do_validador
 | extendsOfRemoveFields | Array String   | Informa os campos que não queremos que seja importado do validador que foi informado em "extendsOf"                                                                                                                             |
 | notExistsFields       | Array String   | Valida se o campo não existe na mensageria. Útil para validar campos que não deveriam vir.                                                                                                                                      |
 | fields                | FieldValidator | Estrutura com regras para validação específica para cada campo.                                                                                                                                                                 |
-| fieldsDependency | FieldDependency | Não         | Campos do qual o campo depende para existir                                             |
+| fieldsDependency | FieldDependency | Campos do qual o campo depende para existir                                             |
 
 ## FieldValidator
 
