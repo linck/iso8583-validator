@@ -145,6 +145,7 @@ iso8583-validator nome_do_validador
 | extendsOfRemoveFields | Array String   | Informa os campos que não queremos que seja importado do validador que foi informado em "extendsOf"                                                                                                                             |
 | notExistsFields       | Array String   | Valida se o campo não existe na mensageria. Útil para validar campos que não deveriam vir.                                                                                                                                      |
 | fields                | FieldValidator | Estrutura com regras para validação específica para cada campo.                                                                                                                                                                 |
+| fieldsDependency | FieldDependency | Não         | Campos do qual o campo depende para existir                                             |
 
 ## FieldValidator
 
@@ -161,3 +162,11 @@ iso8583-validator nome_do_validador
 | contains                  | String         | Não         | Valida se dentro do conteúdo do bit contém o valor informada.                                                                                                                                                                                                                                                                                                                             |
 | subfields                 | FieldValidator | Não         | Valida os subcampos que são em **formato TLV**. Essa estrutura suporta todos campos dos "fields" já descritos acima.   **Obs:**  Os ids dos subcampos TLV possuem 3 posições. Por exemplo o subcampo 1 deverá ser informado da seguinte forma:   **"id": "003"** |
 | contentType               | String 		 | Não         | Tipo do conteudo: <ul><li>text</li><li>binary</li></ul> |
+
+## FieldDependency
+
+| Campo       | Tipo         | Obrigatório | Descrição                                                                               |
+|-------------|--------------|-------------|-----------------------------------------------------------------------------------------|
+| id          | String       | Sim         | Id do campo independente. Corresponte ao bit do ISO8583. **Ex: "2", "11", "55", "127"** |
+| content     | Array String | Sim         | Conteúdos que o campo independente pode conter para o que campo dependente exista       |
+| checkMethod | String       | Sim         | Tipo de checagem do conteudo: <ul><li>match</li></ul>                                   |
